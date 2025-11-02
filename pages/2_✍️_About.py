@@ -40,3 +40,84 @@ st.write("""પાવાગઢ એ ગુજરાત રાજ્યના પ�
 મહત્વની નોંધ: આ માહિતી માત્ર માર્ગદર્શન માટે છે. કૃપા કરીને તમારી મુલાકાતની યોજના બનાવતા પહેલા તાજેતરની માહિતી માટે સત્તાવાર સ્રોતોનો સંપર્ક કરો.
 
 હું આશા રાખું છું કે આ માહિતી તમને ઉપયોગી થશે!""")
+
+
+
+import streamlit as st
+
+st.write("Here’s a complete set of Windows repair and recovery commands — grouped by purpose:")
+
+st.subheader("1️⃣ Basic System File Repair (SFC)")
+st.code("""
+sfc /scannow
+""", language="cmd")
+
+st.subheader("2️⃣ DISM - Image Repair Commands")
+st.code("""
+DISM /Online /Cleanup-Image /CheckHealth
+DISM /Online /Cleanup-Image /ScanHealth
+DISM /Online /Cleanup-Image /RestoreHealth
+""", language="cmd")
+
+st.subheader("3️⃣ Boot Repair Commands")
+st.code("""
+bootrec /fixmbr
+bootrec /fixboot
+bootrec /scanos
+bootrec /rebuildbcd
+
+:: Alternative if Bootrec fails
+bcdboot C:\\Windows /s C: /f ALL
+""", language="cmd")
+
+st.subheader("4️⃣ Check Disk (Drive Error Repair)")
+st.code("""
+chkdsk C: /f
+chkdsk C: /r
+""", language="cmd")
+
+st.subheader("5️⃣ Windows Update & Component Repair")
+st.code("""
+net stop wuauserv
+net stop cryptSvc
+net stop bits
+net stop msiserver
+ren C:\\Windows\\SoftwareDistribution SoftwareDistribution.old
+ren C:\\Windows\\System32\\catroot2 catroot2.old
+net start wuauserv
+net start cryptSvc
+net start bits
+net start msiserver
+
+wuauclt /detectnow
+wuauclt /updatenow
+""", language="cmd")
+
+st.subheader("6️⃣ Cleanup & Optimization")
+st.code("""
+cleanmgr /sagerun:1
+
+:: Reset Network Stack
+netsh int ip reset
+netsh winsock reset
+ipconfig /flushdns
+""", language="cmd")
+
+st.subheader("7️⃣ System Restore / Reset")
+st.code("""
+rstrui.exe
+
+:: Reset this PC (keep files)
+systemreset -cleanpc
+""", language="cmd")
+
+st.subheader("8️⃣ Extra Useful Info")
+st.code("""
+winver
+systeminfo
+wmic logicaldisk get name
+driverquery /v
+w32tm /resync
+""", language="cmd")
+
+st.success("✅ Copy any command and run it in CMD or PowerShell (Run as Administrator) to repair Windows.")
